@@ -10,7 +10,7 @@ const AdminLeaveRequests = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/leave/all", {
+      const res = await fetch("https://hrms-1-2jfq.onrender.com/api/leave/all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const AdminLeaveRequests = () => {
   // Approve or Reject leave()
   const handleAction = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/leave/${id}`, {
+      const res = await fetch(`https://hrms-1-2jfq.onrender.com/api/leave/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -107,22 +107,7 @@ const AdminLeaveRequests = () => {
                           {req.status || "pending"}
                         </span>
                       </td>
-                      {/* <td className="p-3 border text-center flex gap-2 justify-center">
-                        <button
-                          onClick={() => handleAction(req._id, "approved")}
-                          disabled={req.status === "approved"}
-                          className="flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                        >
-                          <CheckCircle className="w-4 h-4" /> Approve
-                        </button>
-                        <button
-                          onClick={() => handleAction(req._id, "rejected")}
-                          disabled={req.status === "rejected"}
-                          className="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                        >
-                          <XCircle className="w-4 h-4" /> Reject
-                        </button>
-                      </td> */}
+                    
                     </tr>
                   ))
                 ) : (
