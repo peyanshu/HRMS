@@ -9,7 +9,7 @@ const ProjectsTable = () => {
   // Fetch all projects
   const fetchProjects = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/project', {
+      const res = await fetch('https://hrms-1-2jfq.onrender.com/api/project', {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -31,7 +31,7 @@ const ProjectsTable = () => {
     try {
       if (editingId) {
         // Update existing project
-        await fetch(`http://localhost:5000/api/project/${editingId}`, {
+        await fetch(`https://hrms-1-2jfq.onrender.com/api/project/${editingId}`, {
           method: "PUT",
           headers: { 
             "Content-Type": "application/json", 
@@ -41,7 +41,7 @@ const ProjectsTable = () => {
         });
       } else {
         // Create new project
-        await fetch('http://localhost:5000/api/project', {
+        await fetch('https://hrms-1-2jfq.onrender.com/api/project', {
           method: "POST",
           headers: { 
             "Content-Type": "application/json", 
