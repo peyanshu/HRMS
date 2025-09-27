@@ -1,1 +1,1 @@
-delpoyment link :- hrms-zci8-850qbsz2x-peyanshu-vermas-projects.vercel.app
+delpoyment link :- hrms-8y8d-caf8f22fk-peyanshu-vermas-projects.vercel.app
