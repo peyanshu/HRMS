@@ -15,7 +15,7 @@ const TimeOffRequest = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/project", {
+        const res = await fetch("https://hrms-1-2jfq.onrender.com/api/project", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const TimeOffRequest = () => {
 
         if (leaveDays.length > 0) {
           const res = await fetch(
-            `http://localhost:5000/api/timesheet/${weekString}?projectId=${projectId}`,
+            `https://hrms-1-2jfq.onrender.com/api/timesheet/${weekString}?projectId=${projectId}`,
             {
               method: "PUT",
               headers: {
