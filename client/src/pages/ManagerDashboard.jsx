@@ -26,7 +26,7 @@ const ManagerDashboard = () => {
   const fetchTimesheets = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/timesheet/manager/pending", {
+      const res = await fetch("https://hrms-1-2jfq.onrender.com/api/timesheet/manager/pending", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const ManagerDashboard = () => {
   const approveTimesheet = async (timesheet) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/timesheet/manager/${timesheet.user._id}/approve`,
+        `https://hrms-1-2jfq.onrender.com/api/timesheet/manager/${timesheet.user._id}/approve`,
         {
           method: "PUT",
           headers: {
