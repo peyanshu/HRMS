@@ -25,8 +25,14 @@ const Dashboard = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+
+        if (!res.ok) {
+          console.error("Error fetching projects:", res.status);
+          return;
+        }
+
         const data = await res.json();
-        setProjects(data);
+        setProjects(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
@@ -42,6 +48,7 @@ const Dashboard = () => {
       const weekString = `${currentYear}-W${currentWeek
         .toString()
         .padStart(2, "0")}`;
+
       const res = await fetch(
         `https://hrms-1-2jfq.onrender.com/api/timesheet/${weekString}?projectId=${projectId}`,
         {
@@ -52,8 +59,15 @@ const Dashboard = () => {
           },
         }
       );
+
+      if (!res.ok) {
+        console.error("Error fetching timesheet:", res.status);
+        setTimesheet([]);
+        return;
+      }
+
       const data = await res.json();
-      setTimesheet(data);
+      setTimesheet(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching timesheet:", error);
       setTimesheet([]);
@@ -65,7 +79,6 @@ const Dashboard = () => {
   // Fetch timesheet with specific week string (for navigation)
   const fetchTimesheetWithWeek = async (projectId, weekString) => {
     if (!projectId) return;
-    
     setLoading(true);
     try {
       const res = await fetch(
@@ -79,8 +92,14 @@ const Dashboard = () => {
         }
       );
 
+      if (!res.ok) {
+        console.error("Error fetching timesheet:", res.status);
+        setTimesheet([]);
+        return;
+      }
+
       const data = await res.json();
-      setTimesheet(data || []);
+      setTimesheet(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching timesheet:", error);
       setTimesheet([]);
@@ -95,13 +114,19 @@ const Dashboard = () => {
       alert("Please select a project first");
       return;
     }
+
     const weekString = `${currentYear}-W${currentWeek
       .toString()
       .padStart(2, "0")}`;
-    const submissionData = timesheet.map((entry) => ({
+
+    const submissionData = (timesheet || []).map((entry) => ({
       date: entry.date,
       hours: entry.hours,
-      status: entry.status === "draft"? "submitted" : entry.status,
+      status: entry.status
+        ? entry.status === "draft"
+          ? "submitted"
+          : entry.status
+        : "draft",
     }));
 
     try {
@@ -117,6 +142,7 @@ const Dashboard = () => {
           body: JSON.stringify(submissionData),
         }
       );
+
       if (res.ok) {
         alert("Timesheet submitted successfully!");
         fetchTimesheet(selectedProject._id);
@@ -220,7 +246,7 @@ const Dashboard = () => {
                 const newWeek = currentWeek - 1;
                 let newYear = currentYear;
                 let finalWeek = newWeek;
-                
+
                 if (newWeek < 1) {
                   newYear = currentYear - 1;
                   finalWeek = moment().year(newYear).isoWeeksInYear();
@@ -228,12 +254,13 @@ const Dashboard = () => {
                 } else {
                   finalWeek = newWeek;
                 }
-                
+
                 setCurrentWeek(finalWeek);
-                
-                // Fetch with the new values directly
+
                 if (selectedProject) {
-                  const weekString = `${newYear}-W${finalWeek.toString().padStart(2, "0")}`;
+                  const weekString = `${newYear}-W${finalWeek
+                    .toString()
+                    .padStart(2, "0")}`;
                   fetchTimesheetWithWeek(selectedProject._id, weekString);
                 }
               }}
@@ -251,10 +278,12 @@ const Dashboard = () => {
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 const newWeek = currentWeek + 1;
-                const weeksInYear = moment().year(currentYear).isoWeeksInYear();
+                const weeksInYear = moment()
+                  .year(currentYear)
+                  .isoWeeksInYear();
                 let newYear = currentYear;
                 let finalWeek = newWeek;
-                
+
                 if (newWeek > weeksInYear) {
                   newYear = currentYear + 1;
                   finalWeek = 1;
@@ -262,12 +291,13 @@ const Dashboard = () => {
                 } else {
                   finalWeek = newWeek;
                 }
-                
+
                 setCurrentWeek(finalWeek);
-                
-                // Fetch with the new values directly
+
                 if (selectedProject) {
-                  const weekString = `${newYear}-W${finalWeek.toString().padStart(2, "0")}`;
+                  const weekString = `${newYear}-W${finalWeek
+                    .toString()
+                    .padStart(2, "0")}`;
                   fetchTimesheetWithWeek(selectedProject._id, weekString);
                 }
               }}
@@ -304,7 +334,7 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-                {timesheet.map((entry, index) => {
+                {(timesheet || []).map((entry, index) => {
                   const dayName = getDayName(entry.date);
                   const isWorkingDay = workingDays.includes(dayName);
 
@@ -348,7 +378,9 @@ const Dashboard = () => {
                             }}
                             className="w-16 text-center border rounded px-1 py-0.5 text-indigo-600 font-bold"
                           />
-                          <span className="text-sm text-gray-500 ml-1">hrs</span>
+                          <span className="text-sm text-gray-500 ml-1">
+                            hrs
+                          </span>
                         </div>
 
                         <span
@@ -358,8 +390,10 @@ const Dashboard = () => {
                               : "bg-yellow-100 text-yellow-800"
                           }`}
                         >
-                          {entry.status.charAt(0).toUpperCase() +
-                            entry.status.slice(1)}
+                          {entry.status
+                            ? entry.status.charAt(0).toUpperCase() +
+                              entry.status.slice(1)
+                            : "Draft"}
                         </span>
                       </div>
                     </motion.div>
