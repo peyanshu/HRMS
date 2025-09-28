@@ -43,7 +43,7 @@ const Dashboard = () => {
         .toString()
         .padStart(2, "0")}`;
       const res = await fetch(
-        `http://localhost:5000/api/timesheet/${weekString}?projectId=${projectId}`,
+        `https://hrms-1-2jfq.onrender.com/api/timesheet/${weekString}?projectId=${projectId}`,
         {
           method: "GET",
           headers: {
