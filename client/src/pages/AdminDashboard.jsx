@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("https://hrms-1-2jfq.onrender.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const  AddProject=()=>{
   // Fetch managers
   const fetchManagers = async () => {
     try {
-     const response = await fetch("http://localhost:5000/api/get/all-managers", {
+     const response = await fetch("https://hrms-1-2jfq.onrender.com/api/get/all-managers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
